@@ -1,0 +1,3 @@
+rootProject.name = 'remusaCRApp'
+
+include ':app'
