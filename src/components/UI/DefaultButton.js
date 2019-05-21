@@ -24,11 +24,10 @@ const defaultButton = (props) => {
     }
 
     return (
-        <TouchableNativeFeedback >
+        <TouchableNativeFeedback onPress={ props.onPress }>
             <View style={[styles.button, {backgroundColor: buttonTypeColor, borderColor: buttonTypeColor}]}>
                 <Text style={styles.text} > {props.title} </Text>
-            </View>
-            
+            </View>            
         </TouchableNativeFeedback>
     );
 }
@@ -40,7 +39,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderWidth: 2,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        margin: 10
     },
     text: {
         color: 'white',

@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: 'silver',
         margin: 10,
-        borderRadius: 5,
+        borderRadius: 10,
         paddingHorizontal: 20,
     }
 });
