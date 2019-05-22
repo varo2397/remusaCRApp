@@ -18,7 +18,7 @@ class Order extends Component {
 
     render() {
         return (
-            <View>
+            <View style={styles.container}>
                 <Text>perro</Text>
                 <Button title={'ejemplo'} onPress={() => this.props.navigation.navigate('Order', {'orderID': 120})}></Button>
             </View>
@@ -27,7 +27,11 @@ class Order extends Component {
 }
 
 const styles = StyleSheet.create({
-
+    container: {
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        margin: 10
+    }
 });
 
 export default Order;

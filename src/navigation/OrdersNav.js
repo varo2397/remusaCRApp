@@ -1,6 +1,7 @@
 import React from 'react';
+import { View, Image, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
+import { createDrawerNavigator, createStackNavigator, SafeAreaView, DrawerItems } from 'react-navigation';
 import Orders from '../screens/Orders/Orders';
 import Order from '../screens/Orders/Order';
 import EditOrder from '../screens/Orders/EditOrder';
@@ -24,6 +25,17 @@ const OrdersStack = createStackNavigator(
     }
 );
 
+const DrawerContent = (props) => {
+    return (
+        <ScrollView>
+            <SafeAreaView style={{flex:1}} >
+                <Image source={require('../../assets/remusa-01.png')} style={{width: '100%', height: 100, resizeMode: 'contain'}}/>
+                <DrawerItems {...props}/>
+            </SafeAreaView>
+        </ScrollView>
+    );
+}
+
 const drawer = createDrawerNavigator(
     {
         'Ordenes': {
@@ -42,8 +54,10 @@ const drawer = createDrawerNavigator(
                     <Icon name={'exit-to-app'} size={24} />
                 )
             }
-
         }
+    },
+    {
+        contentComponent: DrawerContent
     }
 )
 

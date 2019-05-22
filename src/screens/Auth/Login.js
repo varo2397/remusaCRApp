@@ -50,7 +50,7 @@ class Login extends Component {
     render() {
         return (
             <View style={styles.container} >
-                <Text>Remusa</Text>
+                <Image source={require('../../../assets/remusa-01.png')} style={{resizeMode: 'contain', width: '80%', height: '30%'}} />
                 <DefaultInput
                     placeholder={'Correo electronico'}
                     onChangeText={(value) => this.updateInputState('email', value)}
