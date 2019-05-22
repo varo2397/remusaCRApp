@@ -9,7 +9,6 @@ const phoneNumber = (props) => {
             </View>
 
             <View style={styles.data}>
-                {/* <Text onPress={() => Linking.openURL('tel:' + props.data)} style={styles.textNumber}>{props.data}</Text> */}
                 <DefaultButton type={'primary'} title={'Ir a waze'} onPress={() => Linking.openURL(props.data)}/>
             </View>
 
@@ -33,7 +32,7 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 10
+        backgroundColor: '#D1ECF1'
     },
     data: {
         flex:1,
@@ -47,6 +46,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: 'center',
         flexWrap: 'wrap',
+        color: '#0C5460'
     }
 });
 

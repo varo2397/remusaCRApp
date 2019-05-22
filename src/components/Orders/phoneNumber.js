@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 10
+        backgroundColor: '#D1ECF1'
     },
     data: {
         flex:1,
@@ -46,12 +46,14 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: 'center',
         flexWrap: 'wrap',
+        color: '#0C5460'
     },
     textNumber: {
         fontSize: 20,
         textAlign: 'center',
         flexWrap: 'wrap',
-        textDecorationLine: 'underline'
+        textDecorationLine: 'underline',
+        color: '#007bff'
     }
 });
 

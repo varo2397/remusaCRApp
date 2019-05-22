@@ -4,11 +4,11 @@ const OrderData = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.info}>
-                <Text style={styles.text}>{props.info}</Text>
+                <Text style={styles.textInfo}>{props.info}</Text>
             </View>
 
             <View style={styles.data}>
-                <Text style={styles.text}>{props.data}</Text>
+                <Text style={styles.textData}>{props.data}</Text>
             </View>
 
         </View>
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 10
+        backgroundColor: '#D1ECF1'
     },
     data: {
         flex:1,
@@ -41,10 +41,16 @@ const styles = StyleSheet.create({
         margin: 10,
         flexDirection: 'row',
     },
-    text: {
+    textData: {
         fontSize: 20,
         textAlign: 'center',
         flexWrap: 'wrap',
+    },
+    textInfo: {
+        fontSize: 20,
+        textAlign: 'center',
+        flexWrap: 'wrap',
+        color: '#0C5460'
     }
 });
 

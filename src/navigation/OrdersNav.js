@@ -15,7 +15,7 @@ const OrdersStack = createStackNavigator(
         Order: {
             screen: Order
         },
-        EditOrder: {
+        OrderReport: {
             screen: OrderReport
         }
     },

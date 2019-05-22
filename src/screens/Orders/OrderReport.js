@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 
-class EditOrder extends Component {
+class OrderReport extends Component {
     state = {
         orders: []
     };
@@ -19,6 +19,6 @@ const styles = StyleSheet.create({
 
 });
 
-export default EditOrder;
+export default OrderReport;
 
 
