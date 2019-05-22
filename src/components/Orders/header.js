@@ -15,12 +15,13 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         height: 50,
-        justifyContent: 'space-evenly',
+        justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row',
         borderWidth: 1,
         borderColor: 'black',
-        marginVertical: 4
+        marginVertical: 4,
+        borderRadius: 5
     },
     text: {
         fontSize: 15,

@@ -45,6 +45,10 @@ class Order extends Component {
         };
     }
 
+    onPressHandler = (index) => {
+        this.props.navigation.navigate('Order', { orderID: this.state.orders[index].ID })
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -52,7 +56,7 @@ class Order extends Component {
                     <FlatList
                         ListHeaderComponent={(<Header/>)}
                         data={this.state.orders}
-                        renderItem={({ item, index }) => <Row  ID={item.ID} client={item.client} dueDate={item.dueDate}/>}
+                        renderItem={({ item, index }) => <Row onPress={this.onPressHandler} index={index} ID={item.ID} client={item.client} dueDate={item.dueDate}/>}
                         keyExtractor={(item, index) => index.toString() }
                         style={{ width: '100%' }}
                     /> : null

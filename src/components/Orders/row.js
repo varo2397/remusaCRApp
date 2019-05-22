@@ -1,13 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableNativeFeedback } from 'react-native';
 
-const row  = (props) => {
+const row = (props) => {
     return (
-        <View style={styles.container}>
-            <Text style={styles.text}>{props.ID}</Text>
-            <Text style={styles.text}>{props.client}</Text>
-            <Text style={styles.text}>{props.dueDate}</Text>
-        </View>
+        <TouchableNativeFeedback onPress={()=> props.onPress(props.index)}>
+            <View style={styles.container}>
+                <Text style={styles.text}>{props.ID}</Text>
+                <Text style={styles.text}>{props.client}</Text>
+                <Text style={styles.text}>{props.dueDate}</Text>
+            </View>
+        </TouchableNativeFeedback>
+
     );
 };
 
@@ -20,10 +23,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderWidth: 1,
         borderColor: 'black',
-        marginVertical: 4
+        marginVertical: 4,
+        borderRadius: 5
     },
     text: {
-        fontSize: 15
+        fontSize: 15,
     }
 });
 
