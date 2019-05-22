@@ -1,17 +1,46 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, Button } from 'react-native';
+import { View, StyleSheet, Text, Button, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import Row from '../../components/Orders/row';
+import Header from '../../components/Orders/header';
 
 class Order extends Component {
     state = {
-        orders: []
+        orders: [
+            { ID: 0, client: 'VETRASA(ZAPOTE)', dueDate: '2019-05-20' },
+            { ID: 0, client: 'VETRASA(ZAPOTE)', dueDate: '2019-05-20' },
+            { ID: 0, client: 'VETRASA(ZAPOTE)', dueDate: '2019-05-20' },
+            { ID: 0, client: 'VETRASA(ZAPOTE)', dueDate: '2019-05-20' },
+            { ID: 0, client: 'VETRASA(ZAPOTE)', dueDate: '2019-05-20' },
+            { ID: 0, client: 'VETRASA(ZAPOTE)', dueDate: '2019-05-20' },
+            { ID: 0, client: 'VETRASA(ZAPOTE)', dueDate: '2019-05-20' },
+            { ID: 0, client: 'VETRASA(ZAPOTE)', dueDate: '2019-05-20' },
+            { ID: 0, client: 'VETRASA(ZAPOTE)', dueDate: '2019-05-20' },
+            { ID: 0, client: 'VETRASA(ZAPOTE)', dueDate: '2019-05-20' },
+            { ID: 0, client: 'VETRASA(ZAPOTE)', dueDate: '2019-05-20' },
+            { ID: 0, client: 'VETRASA(ZAPOTE)', dueDate: '2019-05-20' },
+            { ID: 0, client: 'VETRASA(ZAPOTE)', dueDate: '2019-05-20' },
+            { ID: 0, client: 'VETRASA(ZAPOTE)', dueDate: '2019-05-20' },
+            { ID: 0, client: 'VETRASA(ZAPOTE)', dueDate: '2019-05-20' },
+            { ID: 0, client: 'VETRASA(ZAPOTE)', dueDate: '2019-05-20' },
+            { ID: 0, client: 'VETRASA(ZAPOTE)', dueDate: '2019-05-20' },
+            { ID: 0, client: 'VETRASA(ZAPOTE)', dueDate: '2019-05-20' },
+            { ID: 0, client: 'VETRASA(ZAPOTE)', dueDate: '2019-05-20' },
+            { ID: 0, client: 'VETRASA(ZAPOTE)', dueDate: '2019-05-20' },
+            { ID: 0, client: 'VETRASA(ZAPOTE)', dueDate: '2019-05-20' },
+        ],
+        isReady: true
     };
+
+    componentDidMount() {
+        this.setState({isReady: true});
+    }
 
     static navigationOptions = ({ navigation }) => {
         return {
             headerTitle: 'Ordenes',
             headerLeft: ({ tintColor }) => (
-                <Icon name="menu" size={40} onPress={() => navigation.openDrawer()} />
+                <Icon name="menu" style={{marginLeft: 10}} size={40} onPress={() => navigation.openDrawer()} />
             ),
         };
     }
@@ -19,8 +48,17 @@ class Order extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>perro</Text>
-                <Button title={'ejemplo'} onPress={() => this.props.navigation.navigate('Order', {'orderID': 120})}></Button>
+                {this.state.isReady ?
+                    <FlatList
+                        ListHeaderComponent={(<Header/>)}
+                        data={this.state.orders}
+                        renderItem={({ item, index }) => <Row  ID={item.ID} client={item.client} dueDate={item.dueDate}/>}
+                        keyExtractor={(item, index) => index.toString() }
+                        style={{ width: '100%' }}
+                    /> : null
+                }
+
+
             </View>
         );
     }
@@ -30,7 +68,8 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'flex-start',
         alignItems: 'center',
-        margin: 10
+        margin: 10,
+        flex: 1
     }
 });
 
