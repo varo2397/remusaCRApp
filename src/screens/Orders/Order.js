@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import OrderData from '../../components/Orders/OrderData';
-import OrderDescription from '../../components/Orders/OrderDescription';
+import OrderData from '../../components/Orders/orderData';
+import OrderDescription from '../../components/Orders/orderDescription';
+import PhoneNumber from '../../components/Orders/phoneNumber';
+import Waze from '../../components/Orders/waze';
 
 class Orders extends Component {
     state = {
@@ -20,9 +22,9 @@ class Orders extends Component {
             <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={styles.container}>
                 <View style={styles.details}>
                     <OrderData data={'VETRASA (Zapote) '} info={'Cliente:'} />
-                    <OrderData data={'2272-7000'} info={'Número cliente:'} />
+                    <PhoneNumber data={'2272-7000'} info={'Número cliente:'} />
                     <OrderData data={'Zapote, diagonal a la rotonda de las Garantías Sociales.'} info={'Dirección cliente:'} />
-                    <OrderData data={'Boton'} info={'Waze:'} />
+                    <Waze data={'https://waze.com/ul?q=Zapote, diagonal a la rotonda de las Garantías Sociales.'} info={'Waze:'} />
                     <OrderData data={'William Chavarría'} info={'Técnico Responsable:'} />
                     <OrderData data={'Abierto'} info={'Estado:'} />
                     <OrderData data={'Alta'} info={'Prioridad:'} />

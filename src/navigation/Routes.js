@@ -9,7 +9,7 @@ const Routes = createSwitchNavigator(
         Orders: Drawer
     },
     {
-        initialRouteName: 'Auth'
+        initialRouteName: 'Orders'
     }
 )
 

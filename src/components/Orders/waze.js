@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-const OrderData = (props) => {
+import { View, Text, StyleSheet, Linking } from 'react-native';
+import DefaultButton from '../UI/DefaultButton';
+const phoneNumber = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.info}>
@@ -8,7 +9,8 @@ const OrderData = (props) => {
             </View>
 
             <View style={styles.data}>
-                <Text style={styles.text}>{props.data}</Text>
+                {/* <Text onPress={() => Linking.openURL('tel:' + props.data)} style={styles.textNumber}>{props.data}</Text> */}
+                <DefaultButton type={'primary'} title={'Ir a waze'} onPress={() => Linking.openURL(props.data)}/>
             </View>
 
         </View>
@@ -48,4 +50,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default OrderData
+export default phoneNumber;

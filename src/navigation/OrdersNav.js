@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { createDrawerNavigator, createStackNavigator, SafeAreaView, DrawerItems } from 'react-navigation';
 import Orders from '../screens/Orders/Orders';
 import Order from '../screens/Orders/Order';
-import EditOrder from '../screens/Orders/EditOrder';
+import OrderReport from '../screens/Orders/OrderReport';
 import Logout from '../screens/Auth/Logout';
 
 const OrdersStack = createStackNavigator(
@@ -16,7 +16,7 @@ const OrdersStack = createStackNavigator(
             screen: Order
         },
         EditOrder: {
-            screen: EditOrder
+            screen: OrderReport
         }
     },
     {

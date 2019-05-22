@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-const OrderData = (props) => {
+import { View, Text, StyleSheet, Linking } from 'react-native';
+
+const phoneNumber = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.info}>
@@ -8,7 +9,7 @@ const OrderData = (props) => {
             </View>
 
             <View style={styles.data}>
-                <Text style={styles.text}>{props.data}</Text>
+                <Text onPress={() => Linking.openURL('tel:' + props.data)} style={styles.textNumber}>{props.data}</Text>
             </View>
 
         </View>
@@ -45,7 +46,13 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: 'center',
         flexWrap: 'wrap',
+    },
+    textNumber: {
+        fontSize: 20,
+        textAlign: 'center',
+        flexWrap: 'wrap',
+        textDecorationLine: 'underline'
     }
 });
 
-export default OrderData
+export default phoneNumber;

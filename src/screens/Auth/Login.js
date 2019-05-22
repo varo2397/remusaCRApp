@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, Text, StyleSheet, View } from 'react-native';
+import { Image, Text, StyleSheet, View, PermissionsAndroid } from 'react-native';
 import DefaultInput from '../../components/UI/DefaultInput';
 import DefaultButton from '../../components/UI/DefaultButton';
 
@@ -18,6 +18,37 @@ class Login extends Component {
         },
         error: ''
     };
+
+    componentDidMount() {
+        console.log('e')
+        this.checkCameraPermissions();
+    }
+
+    checkCameraPermissions = async () => {
+        
+        const checkCameraPermission = PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA);
+        if(checkCameraPermission === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log('hola')
+        }
+        else {
+            try {
+                const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA,
+                    {
+                        'title': 'Cool Location App required Location permission',
+                        'message': 'We required Location permission in order to get device location ' +
+                            'Please grant us.'
+                    }
+                )
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    
+                } else {
+                    alert("You don't have access for the location");
+                }
+            } catch (err) {
+                alert(err)
+            }
+        }
+    }
 
     updateInputState = (key, value) => {
         this.setState(prevState => {
