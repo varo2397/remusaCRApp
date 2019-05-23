@@ -1,25 +1,40 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import OrderData from '../../components/Orders/orderData';
-import OrderDescription from '../../components/Orders/orderDescription';
-import PhoneNumber from '../../components/Orders/phoneNumber';
-import Waze from '../../components/Orders/waze';
+import OrderData from '../../components/Order/orderData';
+import OrderDescription from '../../components/Order/orderDescription';
+import PhoneNumber from '../../components/Order/phoneNumber';
+import Waze from '../../components/Order/waze';
 import DefaultButton from '../../components/UI/DefaultButton';
 
 class Orders extends Component {
     state = {
-        orders: []
+        order: {},
+        isReady: false
     };
 
     static navigationOptions = ({ navigation }) => {
         return {
-            headerTitle: 'Orden #' + navigation.getParam('orderID', 0),
-            headerBackTitle: 'ejemplo'
+            headerTitle: 'Orden #' + navigation.getParam('orderID', 0)
         };
     }
 
+    componentDidMount() {
+        this.setState({
+            order: {
+                client: 'VETRASA (Zapote)',
+                phoneNumber: '2272-7000',
+                address: 'Zapote, diagonal a la rotonda de las Garantías Sociales.',
+                waze: 'https://waze.com/ul?q=Zapote, diagonal a la rotonda de las Garantías Sociales.',
+                tech: 'William Chavarría',
+                state: 'Abierto',
+                priority: 'Alta',
+                entryDate: '2019-05-16 13:55:32',
+                dueDate: '2019-05-20'
+            }
+        })
+    }
+
     editOrderHandler = () => {
-        console.log('hola')
         const orderID = this.props.navigation.getParam('orderID', 0);
         this.props.navigation.navigate('OrderReport', {orderID: orderID})
     }
@@ -32,15 +47,15 @@ class Orders extends Component {
                 </View>
 
                 <View style={styles.details}>
-                    <OrderData data={'VETRASA (Zapote) '} info={'Cliente:'} />
-                    <PhoneNumber data={'2272-7000'} info={'Número cliente:'} />
-                    <OrderData data={'Zapote, diagonal a la rotonda de las Garantías Sociales.'} info={'Dirección cliente:'} />
-                    <Waze data={'https://waze.com/ul?q=Zapote, diagonal a la rotonda de las Garantías Sociales.'} info={'Waze:'} />
-                    <OrderData data={'William Chavarría'} info={'Técnico Responsable:'} />
-                    <OrderData data={'Abierto'} info={'Estado:'} />
-                    <OrderData data={'Alta'} info={'Prioridad:'} />
-                    <OrderData data={'2019-05-16 13:55:32'} info={'Fecha de ingreso:'} />
-                    <OrderData data={'2019-05-20'} info={'Fecha Planificada:'} />
+                    <OrderData data={this.state.order.client} info={'Cliente:'} />
+                    <PhoneNumber data={this.state.order.phoneNumber} info={'Número cliente:'} />
+                    <OrderData data={this.state.order.address} info={'Dirección cliente:'} />
+                    <Waze data={this.state.order.waze} info={'Waze:'} />
+                    <OrderData data={this.state.order.tech} info={'Técnico Responsable:'} />
+                    <OrderData data={this.state.order.state} info={'Estado:'} />
+                    <OrderData data={this.state.order.priority} info={'Prioridad:'} />
+                    <OrderData data={this.state.order.entryDate} info={'Fecha de ingreso:'} />
+                    <OrderData data={this.state.order.dueDate} info={'Fecha Planificada:'} />
                 </View>
                 <View style={styles.description}>
                     <OrderDescription description={
