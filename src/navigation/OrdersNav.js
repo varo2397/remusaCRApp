@@ -5,6 +5,7 @@ import { createDrawerNavigator, createStackNavigator, SafeAreaView, DrawerItems 
 import Orders from '../screens/Orders/Orders';
 import Order from '../screens/Orders/Order';
 import OrderReport from '../screens/Orders/OrderReport';
+import Sign from '../screens/Orders/Sign';
 import Logout from '../screens/Auth/Logout';
 
 const OrdersStack = createStackNavigator(
@@ -17,6 +18,9 @@ const OrdersStack = createStackNavigator(
         },
         OrderReport: {
             screen: OrderReport
+        },
+        Sign: {
+            screen: Sign
         }
     },
     {

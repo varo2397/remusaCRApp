@@ -4,7 +4,7 @@ import Report from '../../components/OrderReport/report';
 
 class OrderReport extends Component {
     state = {
-        
+        type: this.props.navigation.getParam('type', 0)
     };
 
     static navigationOptions = ({ navigation }) => {
@@ -16,7 +16,7 @@ class OrderReport extends Component {
     render() {
         return (
             <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center' }} style={styles.container}>
-                <Report />
+                <Report type={this.state.type}/>
             </ScrollView>
         );
     }

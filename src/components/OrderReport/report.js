@@ -12,7 +12,7 @@ class Report extends Component {
         image: null,
         comment: '',
         date: Moment(new Date()).format("YYYY-MM-DD h:mm:ss"),
-        signature: false
+        base64Image: null
     }
 
     pickPhotoHandler = () => {
@@ -31,20 +31,16 @@ class Report extends Component {
                     console.log('error');
                 }
                 else {
-                    this.setState({ image: { uri: response.uri } })
+                    console.log(response.data)
+                    this.setState({ image: { uri: response.uri }, base64Image: response.data })
                 }
             });
     }
 
-    openModal = () => {
-        this.setState({signature: true});
-    }
-
-    closeModal = () => {
-        this.setState({signature: false});
-    }
+  
 
     render() {
+
         return (
             <View style={styles.container}>
 
@@ -58,9 +54,7 @@ class Report extends Component {
 
                 <DefaultButton onPress={this.pickPhotoHandler} title={'Escoger foto del trabajo'} type={'success'} />
 
-                <Signature close={this.closeModal} visible={this.state.signature}/>
-
-                <DefaultButton onPress={this.openModal} title={'Guardar reporte'} type={'primary'} />
+                <DefaultButton onPress={this.openModal} title={'Guardar información de ' +  this.props.type} type={'primary'} /> 
 
             </View>
         );

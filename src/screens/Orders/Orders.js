@@ -45,7 +45,7 @@ class Order extends Component {
     }
 
     onPressHandler = (index) => {
-        this.props.navigation.navigate('Order', { orderID: this.state.orders[index].ID })
+        this.props.navigation.navigate('Order', { orderID: this.state.orders[index].id_orden })
     }
 
     render() {

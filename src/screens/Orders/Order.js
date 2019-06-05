@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import OrderData from '../../components/Order/orderData';
 import OrderDescription from '../../components/Order/orderDescription';
 import PhoneNumber from '../../components/Order/phoneNumber';
@@ -18,49 +19,68 @@ class Orders extends Component {
         };
     }
 
-    componentDidMount() {
-        this.setState({
-            order: {
-                client: 'VETRASA (Zapote)',
-                phoneNumber: '2272-7000',
-                address: 'Zapote, diagonal a la rotonda de las Garantías Sociales.',
-                waze: 'https://waze.com/ul?q=Zapote, diagonal a la rotonda de las Garantías Sociales.',
-                tech: 'William Chavarría',
-                state: 'Abierto',
-                priority: 'Alta',
-                entryDate: '2019-05-16 13:55:32',
-                dueDate: '2019-05-20'
+    getOrderInfo = async () => {
+        const orders = JSON.parse(await AsyncStorage.getItem('orders'));
+        const orderID = this.props.navigation.getParam('orderID', 0);
+
+        const order = orders.filter(order => {
+            if ( order.id_orden === orderID ) {
+                return order;
             }
+        })[0];
+        this.setState({ order: order });
+    }
+
+    componentDidMount() {
+        this.getOrderInfo();
+    }
+
+    beforeOrderHandler = () => {
+        const orderID = this.props.navigation.getParam('orderID', 0);
+        this.props.navigation.navigate('OrderReport', {
+            orderID: orderID,
+            type: 'antes'
         })
     }
 
-    editOrderHandler = () => {
+    afterOrderHandler = () => {
         const orderID = this.props.navigation.getParam('orderID', 0);
-        this.props.navigation.navigate('OrderReport', {orderID: orderID})
+        this.props.navigation.navigate('OrderReport', {
+            orderID: orderID,
+            type: 'después'
+        })
+    }
+
+    signOrderHandler = () => {
+        const orderID = this.props.navigation.getParam('orderID', 0);
+        this.props.navigation.navigate('Sign', {
+            orderID: orderID
+        })
     }
 
     render() {
         return (
             <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={styles.container}>
                 <View style={styles.button}>
-                    <DefaultButton onPress={this.editOrderHandler} type={'warning'} title={'Llenar reporte'} />
+                    <DefaultButton onPress={this.beforeOrderHandler} type={'warning'} title={'Antes'} />
+                    <DefaultButton onPress={this.afterOrderHandler} type={'primary'} title={'Después'} />
+                    <DefaultButton onPress={this.signOrderHandler} type={'success'} title={'Firma'} />
                 </View>
 
                 <View style={styles.details}>
-                    <OrderData data={this.state.order.client} info={'Cliente:'} />
-                    <PhoneNumber data={this.state.order.phoneNumber} info={'Número cliente:'} />
-                    <OrderData data={this.state.order.address} info={'Dirección cliente:'} />
-                    <Waze data={this.state.order.waze} info={'Waze:'} />
-                    <OrderData data={this.state.order.tech} info={'Técnico Responsable:'} />
-                    <OrderData data={this.state.order.state} info={'Estado:'} />
-                    <OrderData data={this.state.order.priority} info={'Prioridad:'} />
-                    <OrderData data={this.state.order.entryDate} info={'Fecha de ingreso:'} />
-                    <OrderData data={this.state.order.dueDate} info={'Fecha Planificada:'} />
+                    <OrderData data={this.state.order.cliente} info={'Cliente:'} />
+                    <PhoneNumber data={this.state.order.numero_cliente} info={'Número cliente:'} />
+                    <OrderData data={this.state.order.direccion} info={'Dirección cliente:'} />
+                    <Waze data={''} info={'Waze:'} />
+                    <OrderData data={this.state.order.tecnico} info={'Técnico Responsable:'} />
+                    <OrderData data={0} info={'Estado:'} />
+                    <OrderData data={this.state.order.prioridad} info={'Prioridad:'} />
+                    <OrderData data={this.state.order.fecha_ingreso} info={'Fecha de ingreso:'} />
+                    <OrderData data={this.state.order.fecha_limite} info={'Fecha Planificada:'} />
                 </View>
                 <View style={styles.description}>
                     <OrderDescription description={
-                        '1.	Mantenimiento de elevadores: Algunos elevadores se encuentran en condiciones no aptas para su funcionamiento, por ejemplo, unos están faltantes de seguros tanto en las torres como en los brazos, hules anti deslizantes, adaptadores de altura, algunos pistones se encuentran con fugas de aceite y otros rechinan por falta de lubricación. 2.	Dispensadores de aceite: Las mangueras no bloquean, se quedan atascadas y no desenvuelven, otros no se devuelven una vez utilizada la manguera, adicional a esto, las pistolas se encuentran descalibradas.'
-                    } />
+                        this.state.order.descripcion_trabajo } />
                 </View>
             </ScrollView>
 

@@ -30,7 +30,7 @@ class Signature extends Component {
                                     <View style={[{ backgroundColor: color, borderWidth: 2 }, styles.strokeColorButton]} />
                                 )
                             }}
-                            onSketchSaved={(result, path) => console.log(path)}
+                            onSketchSaved={(result, path) => this.props.onSave(path)}
 
                             saveComponent={
                                 <View style={[styles.button, { backgroundColor: '#007bff', borderColor: '#007bff' }]}>
