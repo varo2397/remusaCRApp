@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.4.0",
+    "@react-native-community/netinfo": "^3.2.1",
     "@terrylinla/react-native-sketch-canvas": "^0.8.0",
     "axios": "^0.18.0",
     "moment": "^2.24.0",

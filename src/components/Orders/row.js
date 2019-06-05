@@ -6,7 +6,7 @@ const row = (props) => {
         <TouchableNativeFeedback onPress={()=> props.onPress(props.index)}>
             <View style={styles.container}>
                 <Text style={styles.text}>{props.ID}</Text>
-                <Text style={styles.text}>{props.client}</Text>
+                <Text style={styles.client}>{props.client}</Text>
                 <Text style={styles.text}>{props.dueDate}</Text>
             </View>
         </TouchableNativeFeedback>
@@ -28,6 +28,14 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 15,
+    },
+    client : {
+        flexWrap: 'wrap', 
+        width: '66%',
+        fontSize: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center'
     }
 });
 

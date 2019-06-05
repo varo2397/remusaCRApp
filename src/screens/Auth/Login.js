@@ -76,7 +76,7 @@ class Login extends Component {
         });
 
         if (userCorrect.length > 0) {
-            AsyncStorage.setItem('email', this.state.controls.email.value)
+            AsyncStorage.setItem('userID', userCorrect[0].id)
             .then(() => this.props.navigation.navigate('Orders'))
             .catch(err => console.log(err));
             
