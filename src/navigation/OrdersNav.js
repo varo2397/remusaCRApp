@@ -20,7 +20,7 @@ const OrdersStack = createStackNavigator(
         }
     },
     {
-        initialRouteName: 'OrderReport',
+        initialRouteName: 'Orders',
         headerMode: 'screen',
     }
 );

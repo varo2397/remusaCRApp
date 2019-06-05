@@ -44,6 +44,20 @@ class Signature extends Component {
                                     imageType: 'png'
                                 }
                             }}
+                            canvasText={() => {
+                                return {
+                                    text: 'HOLA MUNDO',
+                                    font: '',
+                                    fontSize: 20,
+                                    fontColor: 'red',
+                                    overlay: 'TextOnSketch',
+                                    anchor: { x: 0, y: 1 },
+                                    position: { x: 100, y: 200 },
+                                    coordinate: 'Absolute',
+                                    alignment: 'Center',
+                                    lineHeightMultiple: 1.2
+                                }
+                            }}
                         />
                     </View>
                 </View>

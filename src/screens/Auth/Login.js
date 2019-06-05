@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Image, Text, StyleSheet, View, PermissionsAndroid } from 'react-native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 import DefaultInput from '../../components/UI/DefaultInput';
 import DefaultButton from '../../components/UI/DefaultButton';
 
@@ -16,11 +18,11 @@ class Login extends Component {
                 touched: false
             }
         },
-        error: ''
+        error: '',
+        users: []
     };
 
     componentDidMount() {
-        console.log('e')
         this.checkCameraPermissions();
     }
 
@@ -28,7 +30,7 @@ class Login extends Component {
         
         const checkCameraPermission = PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA);
         if(checkCameraPermission === PermissionsAndroid.RESULTS.GRANTED) {
-            console.log('hola')
+
         }
         else {
             try {
@@ -65,13 +67,38 @@ class Login extends Component {
         })
     }
 
+    submitValidation = (users) => {
+        const userCorrect = users.filter(value => {
+            if (this.state.controls.email.value === value.email &&
+                this.state.controls.password.value === value.pass) {
+                    return value
+                }
+        });
+
+        console.log(userCorrect);
+
+        if (userCorrect.length > 0) {
+            AsyncStorage.setItem('email', this.state.controls.email);
+            this.props.navigation.navigate('Orders');
+        }
+        else {
+            this.setState({ error: 'Correo eléctronico o contraseña incorrectos' })
+        }
+    }
+
+    getAllUsers = () => {
+        axios.get('http://remusacr.com/gestion/app/usuarios.php').then(response => {
+            this.submitValidation(response.data);
+        })
+    }
+
     loginHandler = () => {
         if (this.state.controls.email.touched
             && this.state.controls.email.value !== ''
             && this.state.controls.password.touched
             && this.state.controls.password.value !== '') {
             this.setState({ error: '' });
-            this.props.navigation.navigate('Orders');
+            this.getAllUsers();
         }
         else {
             this.setState({ error: 'No has ingresado la contraseña o el correo electronico' })
