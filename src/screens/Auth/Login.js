@@ -75,11 +75,11 @@ class Login extends Component {
                 }
         });
 
-        console.log(userCorrect);
-
         if (userCorrect.length > 0) {
-            AsyncStorage.setItem('email', this.state.controls.email);
-            this.props.navigation.navigate('Orders');
+            AsyncStorage.setItem('email', this.state.controls.email.value)
+            .then(() => this.props.navigation.navigate('Orders'))
+            .catch(err => console.log(err));
+            
         }
         else {
             this.setState({ error: 'Correo eléctronico o contraseña incorrectos' })

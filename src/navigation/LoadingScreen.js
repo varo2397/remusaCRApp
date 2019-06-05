@@ -10,8 +10,9 @@ class LoadingScreen extends Component {
     }
 
     checkLoggedInUser = async() => {
-        const profile = await AsyncStorage.getItem('email');
-        this.props.navigation.navigate(profile ? 'Orders' : 'Auth');
+        const email = await AsyncStorage.getItem('email');
+        console.log(email)
+        this.props.navigation.navigate(email ? 'Orders' : 'Auth');
     }
 
     render() {
