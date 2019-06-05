@@ -41,23 +41,17 @@ class Signature extends Component {
                                     folder: 'RNSketchCanvas',
                                     filename: String(Math.ceil(Math.random() * 100000000)),
                                     transparent: false,
-                                    imageType: 'png'
+                                    imageType: 'png',
+                                    includeText: true
                                 }
                             }}
-                            canvasText={() => {
-                                return {
+                            text={[
+                                {
                                     text: 'HOLA MUNDO',
-                                    font: '',
-                                    fontSize: 20,
-                                    fontColor: 'red',
-                                    overlay: 'TextOnSketch',
-                                    anchor: { x: 0, y: 1 },
-                                    position: { x: 100, y: 200 },
-                                    coordinate: 'Absolute',
-                                    alignment: 'Center',
-                                    lineHeightMultiple: 1.2
+                                    position: {x: 200, y: 400},
+                                    overlay: 'TextOnSketch'
                                 }
-                            }}
+                            ]}
                         />
                     </View>
                 </View>
