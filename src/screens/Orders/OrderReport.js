@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Report from '../../components/OrderReport/report';
+import Loading from '../../components/UI/Loading';
 
 class OrderReport extends Component {
     state = {
-        type: this.props.navigation.getParam('type', 0)
+        type: this.props.navigation.getParam('type', 0),
+        isLoading: false
     };
 
     saveOrderReport = async (orderData) => {
-
+        this.setState({isLoading: true});
         if(this.state.type === 'antes') {
             const orderReport = {};
             orderReport['antes'] = orderData;
@@ -21,7 +23,7 @@ class OrderReport extends Component {
             ordersDelayed.push(orderReport);
             
             const value = await AsyncStorage.setItem('ordersDelayed', JSON.stringify(ordersDelayed));
-    
+            this.setState({isLoading: false});
             this.props.navigation.goBack();
         }
         else {
@@ -39,13 +41,12 @@ class OrderReport extends Component {
                 }
             }
             currentOrder['despues'] = orderData;
-            console.log(currentOrder)
 
             
             ordersDelayed[i] = currentOrder;
             
             const value = await AsyncStorage.setItem('ordersDelayed', JSON.stringify(ordersDelayed));
-    
+            this.setState({isLoading: false});
             this.props.navigation.goBack();
         }
 
@@ -61,6 +62,7 @@ class OrderReport extends Component {
     render() {
         return (
             <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center' }} style={styles.container}>
+                <Loading visible={this.state.isLoading}/>
                 <Report type={this.state.type} onSave={this.saveOrderReport}/>
             </ScrollView>
         );

@@ -3,6 +3,7 @@ package com.remusacrapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.react.rnspinkit.RNSpinkitPackage;
 import com.reactnativecommunity.netinfo.NetInfoPackage;
 import com.rnfs.RNFSPackage;
 import com.terrylinla.rnsketchcanvas.SketchCanvasPackage;
@@ -30,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNSpinkitPackage(),
             new NetInfoPackage(),
             new RNFSPackage(),
             new SketchCanvasPackage(),

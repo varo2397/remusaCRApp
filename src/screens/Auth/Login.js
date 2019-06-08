@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Image, Text, StyleSheet, View, PermissionsAndroid } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNFS from 'react-native-fs';
 import DefaultInput from '../../components/UI/DefaultInput';
 import DefaultButton from '../../components/UI/DefaultButton';
 
@@ -79,6 +80,7 @@ class Login extends Component {
             const userID = ['userID', JSON.stringify(userCorrect[0].id)];
             const ordersDelayed = ['ordersDelayed', JSON.stringify([])];
 
+            RNFS.mkdir('/storage/emulated/0/Pictures/REMUSA')
             AsyncStorage.multiSet([userID, ordersDelayed])
             .then(() => this.props.navigation.navigate('Orders'))
             .catch(err => console.log(err));

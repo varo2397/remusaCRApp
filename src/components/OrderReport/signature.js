@@ -42,7 +42,7 @@ class Signature extends Component {
                                 </View>}
                             savePreference={() => {
                                 return {
-                                    folder: 'RNSketchCanvas',
+                                    folder: 'REMUSA',
                                     filename: String(Math.ceil(Math.random() * 100000000)),
                                     transparent: false,
                                     imageType: 'png',
@@ -52,11 +52,11 @@ class Signature extends Component {
                             text={[
                                 {
                                     text: text,
-                                    anchor: { x: 1, y: 1 },
-                                    position: {x: width, y: height - 100},
+                                    position: {x: 300, y: 400},
                                     overlay: 'TextOnSketch',
                                     fontSize: 60,
-                                    coordinate: "Absolute"
+                                    coordinate: "Absolute",
+                                    alignment: 'Center'
                                 }
                             ]}
                         />

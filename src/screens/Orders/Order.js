@@ -6,11 +6,13 @@ import OrderDescription from '../../components/Order/orderDescription';
 import PhoneNumber from '../../components/Order/phoneNumber';
 import Waze from '../../components/Order/waze';
 import DefaultButton from '../../components/UI/DefaultButton';
+import Loading from '../../components/UI/Loading';
 
 class Orders extends Component {
     state = {
         order: {},
-        isReady: false
+        isReady: false,
+        isLoading: false
     };
 
     static navigationOptions = ({ navigation }) => {
@@ -36,42 +38,29 @@ class Orders extends Component {
     }
 
     beforeOrderHandler = async () => {
-
+        this.setState({isLoading: true});
         const orderID = this.props.navigation.getParam('orderID', 0);
         const ordersDelayed = JSON.parse(await AsyncStorage.getItem('ordersDelayed'));
         let orderData = {};
-
+        
+        const filteredOrders = ordersDelayed.filter((order) => order.orden === orderID);
         //there is at least one delayed order
-        if (ordersDelayed.length > 0) {
-
-            //cfind out if the order is in the delayed orders
-            for (let i = 0; ordersDelayed.length; i++) {
-                if (ordersDelayed[i].orden === orderID) {
-                    orderData = ordersDelayed[i];
-                    break
-                }
-            }
-
+        if (filteredOrders.length > 0) {
+            orderData = filteredOrders[0];
+ 
             //check if the order before has been filled 
             if ('antes' in orderData) {
+                this.setState({isLoading: false});
                 Alert.alert(
                     'Error',
                     'Ya habías ingresado el antes de esta orden'
                 )
             }
-
-            //the order does not has a before 
-            else {
-                const orderID = this.props.navigation.getParam('orderID', 0);
-                this.props.navigation.navigate('OrderReport', {
-                    orderID: orderID,
-                    type: 'antes'
-                });
-            }
         }
 
         //there no delayed orders so the before has to be done 
         else {
+            this.setState({isLoading: false});
             const orderID = this.props.navigation.getParam('orderID', 0);
             this.props.navigation.navigate('OrderReport', {
                 orderID: orderID,
@@ -82,42 +71,35 @@ class Orders extends Component {
     }
 
     afterOrderHandler = async () => {
-
+        this.setState({isLoading: true});
         const orderID = this.props.navigation.getParam('orderID', 0);
         const ordersDelayed = JSON.parse(await AsyncStorage.getItem('ordersDelayed'));
         let orderData = {};
-        console.log(ordersDelayed);
 
-        if (ordersDelayed.length > 0) {
+        const filteredOrders = ordersDelayed.filter((order) => order.orden === orderID);
 
-            for (let i = 0; ordersDelayed.length; i++) {
-                if (ordersDelayed[i].orden === orderID && 'antes' in ordersDelayed[i]) {
-                    orderData = ordersDelayed[i];
-                    break
-                }
-            }
+        if (filteredOrders.length > 0) {
+
+            orderData = filteredOrders[0];
 
             if ('despues' in orderData) {
+                this.setState({isLoading: false});
                 Alert.alert(
                     'Error',
                     'Ya habías ingresado el después de esta orden'
                 )
             }
             else if (orderData !== {}) {
+                this.setState({isLoading: false});
                 const orderID = this.props.navigation.getParam('orderID', 0);
                 this.props.navigation.navigate('OrderReport', {
                     orderID: orderID,
                     type: 'después'
                 });
             }
-            else {
-                Alert.alert(
-                    'Error',
-                    'Tienes que llenar el antes de esta orden'
-                )
-            }
         }
         else {
+            this.setState({isLoading: false});
             Alert.alert(
                 'Error',
                 'Tienes que llenar el antes de esta orden'
@@ -128,21 +110,16 @@ class Orders extends Component {
     }
 
     signOrderHandler = async () => {
-
+        // this.setState({isLoading: true});
         const orderID = this.props.navigation.getParam('orderID', 0);
         const ordersDelayed = JSON.parse(await AsyncStorage.getItem('ordersDelayed'));
         let orderData = {};
-        console.log(ordersDelayed);
 
-        if (ordersDelayed.length > 0) {
+        const filteredOrders = ordersDelayed.filter((order) => order.orden === orderID);
 
-            for (let i = 0; ordersDelayed.length; i++) {
-                console.log(ordersDelayed[i].orden);
-                if (ordersDelayed[i].orden == orderID && 'antes' in ordersDelayed[i] && 'despues' in ordersDelayed[i]) {
-                    orderData = ordersDelayed[i];
-                    break
-                }
-            }
+        if (filteredOrders.length > 0) {
+
+            orderData = filteredOrders[0];
 
             if ('firma' in orderData) {
                 Alert.alert(
@@ -176,6 +153,7 @@ class Orders extends Component {
     render() {
         return (
             <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={styles.container}>
+                <Loading visible={this.state.isLoading}/>
                 <View style={styles.button}>
                     <DefaultButton onPress={this.beforeOrderHandler} type={'warning'} title={'Antes'} />
                     <DefaultButton onPress={this.afterOrderHandler} type={'primary'} title={'Después'} />

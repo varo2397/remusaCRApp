@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { View, TextInput, Text, StyleSheet, Image } from 'react-native';
 import Moment from 'moment';
+import RNFS from 'react-native-fs';
 import ImagePicker from 'react-native-image-picker';
 import DefaultButton from '../UI/DefaultButton';
 import DefaulInput from '../UI/DefaultInput';
-import Signature from './signature';
 
 class Report extends Component {
 
@@ -38,14 +38,18 @@ class Report extends Component {
 
     saveReport = () => {
         if (this.state.base64Image !== null && this.state.comment !== '') {
-            const report = {
-                fecha_solucion: this.state.date,
-                solucion: this.state.comment,
-                foto1: this.state.base64Image,
-                foto2: null
-            };
-            console.log(this.props)
-            this.props.onSave(report);
+            const filename = String(Math.ceil(Math.random() * 100000000)) + '.png';
+            const path = '/storage/emulated/0/Pictures/REMUSA/';
+            RNFS.writeFile(path + filename, this.state.base64Image, 'base64').then((response) => {
+                const report = {
+                    fecha_solucion: this.state.date,
+                    solucion: this.state.comment,
+                    foto1: path + filename,
+                    foto2: null
+                };
+                this.props.onSave(report);
+            })
+            
         }
     }
 
