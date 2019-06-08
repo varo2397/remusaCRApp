@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Modal } from 'react-native';
+import { View, Text, StyleSheet, Modal, Dimensions } from 'react-native';
 import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
 
 import DefaultButton from '../UI/DefaultButton';
 
+const { width, height } = Dimensions.get('window');
 class Signature extends Component {
 
 
     render() {
+
+        const text = this.props.text;
+
         return (
             <Modal
                 visible={this.props.visible}
@@ -47,9 +51,12 @@ class Signature extends Component {
                             }}
                             text={[
                                 {
-                                    text: 'HOLA MUNDO',
-                                    position: {x: 200, y: 400},
-                                    overlay: 'TextOnSketch'
+                                    text: text,
+                                    anchor: { x: 1, y: 1 },
+                                    position: {x: width, y: height - 100},
+                                    overlay: 'TextOnSketch',
+                                    fontSize: 60,
+                                    coordinate: "Absolute"
                                 }
                             ]}
                         />

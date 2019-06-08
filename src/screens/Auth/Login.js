@@ -76,7 +76,10 @@ class Login extends Component {
         });
 
         if (userCorrect.length > 0) {
-            AsyncStorage.setItem('userID', userCorrect[0].id)
+            const userID = ['userID', JSON.stringify(userCorrect[0].id)];
+            const ordersDelayed = ['ordersDelayed', JSON.stringify([])];
+
+            AsyncStorage.multiSet([userID, ordersDelayed])
             .then(() => this.props.navigation.navigate('Orders'))
             .catch(err => console.log(err));
             

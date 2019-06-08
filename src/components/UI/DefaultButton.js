@@ -24,7 +24,7 @@ const defaultButton = (props) => {
     }
 
     return (
-        <TouchableNativeFeedback onPress={ props.onPress }>
+        <TouchableNativeFeedback onPress={() => props.onPress() }>
             <View style={[styles.button, {backgroundColor: buttonTypeColor, borderColor: buttonTypeColor}]}>
                 <Text style={styles.text} > {props.title} </Text>
             </View>            

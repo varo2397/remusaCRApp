@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import OrderData from '../../components/Order/orderData';
 import OrderDescription from '../../components/Order/orderDescription';
@@ -24,7 +24,7 @@ class Orders extends Component {
         const orderID = this.props.navigation.getParam('orderID', 0);
 
         const order = orders.filter(order => {
-            if ( order.id_orden === orderID ) {
+            if (order.id_orden === orderID) {
                 return order;
             }
         })[0];
@@ -35,27 +35,142 @@ class Orders extends Component {
         this.getOrderInfo();
     }
 
-    beforeOrderHandler = () => {
+    beforeOrderHandler = async () => {
+
         const orderID = this.props.navigation.getParam('orderID', 0);
-        this.props.navigation.navigate('OrderReport', {
-            orderID: orderID,
-            type: 'antes'
-        })
+        const ordersDelayed = JSON.parse(await AsyncStorage.getItem('ordersDelayed'));
+        let orderData = {};
+
+        //there is at least one delayed order
+        if (ordersDelayed.length > 0) {
+
+            //cfind out if the order is in the delayed orders
+            for (let i = 0; ordersDelayed.length; i++) {
+                if (ordersDelayed[i].orden === orderID) {
+                    orderData = ordersDelayed[i];
+                    break
+                }
+            }
+
+            //check if the order before has been filled 
+            if ('antes' in orderData) {
+                Alert.alert(
+                    'Error',
+                    'Ya habías ingresado el antes de esta orden'
+                )
+            }
+
+            //the order does not has a before 
+            else {
+                const orderID = this.props.navigation.getParam('orderID', 0);
+                this.props.navigation.navigate('OrderReport', {
+                    orderID: orderID,
+                    type: 'antes'
+                });
+            }
+        }
+
+        //there no delayed orders so the before has to be done 
+        else {
+            const orderID = this.props.navigation.getParam('orderID', 0);
+            this.props.navigation.navigate('OrderReport', {
+                orderID: orderID,
+                type: 'antes'
+            });
+        }
+
     }
 
-    afterOrderHandler = () => {
+    afterOrderHandler = async () => {
+
         const orderID = this.props.navigation.getParam('orderID', 0);
-        this.props.navigation.navigate('OrderReport', {
-            orderID: orderID,
-            type: 'después'
-        })
+        const ordersDelayed = JSON.parse(await AsyncStorage.getItem('ordersDelayed'));
+        let orderData = {};
+        console.log(ordersDelayed);
+
+        if (ordersDelayed.length > 0) {
+
+            for (let i = 0; ordersDelayed.length; i++) {
+                if (ordersDelayed[i].orden === orderID && 'antes' in ordersDelayed[i]) {
+                    orderData = ordersDelayed[i];
+                    break
+                }
+            }
+
+            if ('despues' in orderData) {
+                Alert.alert(
+                    'Error',
+                    'Ya habías ingresado el después de esta orden'
+                )
+            }
+            else if (orderData !== {}) {
+                const orderID = this.props.navigation.getParam('orderID', 0);
+                this.props.navigation.navigate('OrderReport', {
+                    orderID: orderID,
+                    type: 'después'
+                });
+            }
+            else {
+                Alert.alert(
+                    'Error',
+                    'Tienes que llenar el antes de esta orden'
+                )
+            }
+        }
+        else {
+            Alert.alert(
+                'Error',
+                'Tienes que llenar el antes de esta orden'
+            )
+        }
+
+
     }
 
-    signOrderHandler = () => {
+    signOrderHandler = async () => {
+
         const orderID = this.props.navigation.getParam('orderID', 0);
-        this.props.navigation.navigate('Sign', {
-            orderID: orderID
-        })
+        const ordersDelayed = JSON.parse(await AsyncStorage.getItem('ordersDelayed'));
+        let orderData = {};
+        console.log(ordersDelayed);
+
+        if (ordersDelayed.length > 0) {
+
+            for (let i = 0; ordersDelayed.length; i++) {
+                console.log(ordersDelayed[i].orden);
+                if (ordersDelayed[i].orden == orderID && 'antes' in ordersDelayed[i] && 'despues' in ordersDelayed[i]) {
+                    orderData = ordersDelayed[i];
+                    break
+                }
+            }
+
+            if ('firma' in orderData) {
+                Alert.alert(
+                    'Error',
+                    'Ya habías firmado estado esta orden'
+                )
+            }
+            else if (orderData !== {}) {
+                const orderID = this.props.navigation.getParam('orderID', 0);
+                this.props.navigation.navigate('Sign', {
+                    orderID: orderID
+                })
+            }
+            else {
+                Alert.alert(
+                    'Error',
+                    'Tienes que llenar el después de esta orden'
+                )
+            }
+        }
+        else {
+            Alert.alert(
+                'Error',
+                'Tienes que llenar el después de esta orden'
+            )
+        }
+
+
     }
 
     render() {
@@ -80,7 +195,7 @@ class Orders extends Component {
                 </View>
                 <View style={styles.description}>
                     <OrderDescription description={
-                        this.state.order.descripcion_trabajo } />
+                        this.state.order.descripcion_trabajo} />
                 </View>
             </ScrollView>
 

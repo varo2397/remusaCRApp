@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, StyleSheet } from'react-native';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 import RNFS from 'react-native-fs';
 
 import DefaultButton from '../../components/UI/DefaultButton';
@@ -20,7 +20,8 @@ class Sign extends Component {
                 touched: false
             }
         },
-        signed: false
+        signed: false,
+        error: ''
     }
 
     static navigationOptions = ({ navigation }) => {
@@ -30,15 +31,23 @@ class Sign extends Component {
     }
 
     openModal = () => {
-        this.setState({showSignature: true});
+        if (this.state.controls.name.touched
+            && this.state.controls.name.value !== ''
+            && this.state.controls.id.touched
+            && this.state.controls.id.value !== '') {
+            this.setState({ showSignature: true, error: '' });
+        }
+        else {
+            this.setState({ error: 'Tienes que ingresar la cédula y el nombre de la persona que va a firmar' })
+        }
     }
 
     closeModal = () => {
-        this.setState({showSignature: false});
+        this.setState({ showSignature: false });
     }
 
     savedSignature = (path) => {
-        this.setState({signed: true, showSignature: false})
+        this.setState({ signed: true, showSignature: false })
         RNFS.readFile(path, 'base64').then(response => {
             console.log(response);
         })
@@ -62,12 +71,13 @@ class Sign extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Signature onSave={this.savedSignature} close={this.closeModal} visible={this.state.showSignature}/>
+                <Signature text={this.state.controls.name.value + ' ' + this.state.controls.id.value} onSave={this.savedSignature} close={this.closeModal} visible={this.state.showSignature} />
 
-                <DefaultInput editable={!this.state.signed} placeholder={'Nombre'} onChangeText={(value) => this.updateInputState('name', value)}/>
-                <DefaultInput editable={!this.state.signed} placeholder={'Número de cédula'} onChangeText={(value) => this.updateInputState('id', value)}/>
+                <DefaultInput editable={!this.state.signed} placeholder={'Nombre'} onChangeText={(value) => this.updateInputState('name', value)} />
+                <DefaultInput keyboardType={'numeric'} editable={!this.state.signed} placeholder={'Número de cédula'} onChangeText={(value) => this.updateInputState('id', value)} />
 
                 <DefaultButton onPress={this.openModal} title={'Guardar firma'} type={'primary'} />
+                <Text style={styles.textError}>{this.state.error}</Text>
             </View>
         );
     }
@@ -77,6 +87,11 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    textError: {
+        color: 'red',
+        fontSize: 15,
+        textAlign: 'center'
     }
 });
 
