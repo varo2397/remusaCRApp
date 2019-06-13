@@ -41,13 +41,25 @@ class Report extends Component {
             const filename = String(Math.ceil(Math.random() * 100000000)) + '.png';
             const path = '/storage/emulated/0/Pictures/REMUSA/';
             RNFS.writeFile(path + filename, this.state.base64Image, 'base64').then((response) => {
-                const report = {
-                    fecha_solucion: this.state.date,
-                    solucion: this.state.comment,
-                    foto1: path + filename,
-                    foto2: null
-                };
-                this.props.onSave(report);
+                if (this.props.type === 'antes') {
+                    const report = {
+                        fecha_solucion: this.state.date,
+                        solucion: this.state.comment,
+                        foto1: path + filename,
+                        foto2: null
+                    };
+                    this.props.onSave(report);
+                }
+                else {
+                    const report = {
+                        fecha_solucion_fin: this.state.date,
+                        comentario_adicional: this.state.comment,
+                        foto1: path + filename,
+                        foto2: null
+                    };
+                    this.props.onSave(report);
+                }
+                
             })
             
         }

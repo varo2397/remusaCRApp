@@ -52,12 +52,12 @@ class Sign extends Component {
     }
 
     savedSignature = async (path) => {
-        
+
         this.setState({ signed: true, showSignature: false, isLoading: true });
 
         const orderData = {
             foto_firma: path,
-            estado: 1
+            estado: 0
         }
 
         const ordersDelayed = JSON.parse(await AsyncStorage.getItem('ordersDelayed'));
@@ -76,36 +76,44 @@ class Sign extends Component {
 
 
         // const value = await AsyncStorage.setItem('ordersDelayed', JSON.stringify(ordersDelayed));
-        await this.sendOrderReport(currentOrder);
-        
+        await this.sendOrderReport(currentOrder, i);
+
 
     }
 
-    sendOrderReport = async (orderData) => {
-        console.log(orderData);
-        this.setState({isLoading: false})
+    sendOrderReport = async (orderData, index) => {
+        this.setState({ isLoading: true });
         const internetConnection = await NetInfo.fetch();
-        if (internetConnection.isConnected && internetConnection.type === 'wifi') {
+
+        // check if the user has internet available       
+        if (internetConnection.isConnected && (internetConnection.type === 'wifi' || internetConnection.type === 'cellular')) {
             const beforePhoto1 = await RNFS.readFile(orderData.antes.foto1, 'base64');
             const afterPhoto1 = await RNFS.readFile(orderData.despues.foto1, 'base64');
             const signature = await RNFS.readFile(orderData.firma.foto_firma, 'base64');
-            orderData.antes.foto1 = beforePhoto1;
-            orderData.despues.foto1 = afterPhoto1;
-            orderData.firma.foto_firma = signature;
+            orderData.antes.foto1 = 'data:image/png;base64,' + beforePhoto1;
+            orderData.despues.foto1 = 'data:image/png;base64,' +  afterPhoto1;
+            orderData.firma.foto_firma = 'data:image/png;base64,' +  signature;
+            
+            console.log(orderData);
 
-            Axios.post('http://remusacr.com/gestion/app/procesar.php', orderData).then(() => {
-
+            Axios.post('http://remusacr.com/gestion/app/procesar.php', orderData, {
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            }).then((response) => {
+                this.setState({ isLoading: false });
+                console.log('se envio el request', response)
                 this.props.navigation.goBack();
             }).catch((err) => {
-                console.log(err)
+                this.setState({ isLoading: false });
+                console.log(err);
                 // this.props.navigation.goBack();
             });
         }
         else {
+            console.log('sin internet')
             this.props.navigation.goBack();
         }
-
-
     }
 
     updateInputState = (key, value) => {
@@ -126,6 +134,7 @@ class Sign extends Component {
     render() {
         return (
             <View style={styles.container}>
+                <Loading visible={this.state.isLoading}/>
                 <Signature text={this.state.controls.name.value + '\n' + this.state.controls.id.value} onSave={this.savedSignature} close={this.closeModal} visible={this.state.showSignature} />
 
                 <DefaultInput editable={!this.state.signed} placeholder={'Nombre'} onChangeText={(value) => this.updateInputState('name', value)} />

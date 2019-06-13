@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import OrderData from '../../components/Order/orderData';
 import OrderDescription from '../../components/Order/orderDescription';
 import PhoneNumber from '../../components/Order/phoneNumber';
-import Waze from '../../components/Order/waze';
 import DefaultButton from '../../components/UI/DefaultButton';
 import Loading from '../../components/UI/Loading';
 
@@ -164,7 +163,6 @@ class Orders extends Component {
                     <OrderData data={this.state.order.cliente} info={'Cliente:'} />
                     <PhoneNumber data={this.state.order.numero_cliente} info={'Número cliente:'} />
                     <OrderData data={this.state.order.direccion} info={'Dirección cliente:'} />
-                    <Waze data={''} info={'Waze:'} />
                     <OrderData data={this.state.order.tecnico} info={'Técnico Responsable:'} />
                     <OrderData data={0} info={'Estado:'} />
                     <OrderData data={this.state.order.prioridad} info={'Prioridad:'} />
