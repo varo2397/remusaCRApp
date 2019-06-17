@@ -8,6 +8,7 @@ import DefaultButton from '../../components/UI/DefaultButton';
 import Loading from '../../components/UI/Loading';
 import DefaultInput from '../../components/UI/DefaultInput';
 import Signature from '../../components/OrderReport/signature';
+import { NavigationActions } from 'react-navigation';
 
 
 class Sign extends Component {
@@ -75,26 +76,28 @@ class Sign extends Component {
         currentOrder['firma'] = orderData;
 
 
-        // const value = await AsyncStorage.setItem('ordersDelayed', JSON.stringify(ordersDelayed));
-        await this.sendOrderReport(currentOrder, i);
+        const value = await AsyncStorage.setItem('ordersDelayed', JSON.stringify(ordersDelayed));
+        await this.sendOrderReport(currentOrder);
 
 
     }
 
-    sendOrderReport = async (orderData, index) => {
+    sendOrderReport = async (orderData) => {
         this.setState({ isLoading: true });
         const internetConnection = await NetInfo.fetch();
 
         // check if the user has internet available       
         if (internetConnection.isConnected && (internetConnection.type === 'wifi' || internetConnection.type === 'cellular')) {
+            // get base64 images from route
             const beforePhoto1 = await RNFS.readFile(orderData.antes.foto1, 'base64');
             const afterPhoto1 = await RNFS.readFile(orderData.despues.foto1, 'base64');
             const signature = await RNFS.readFile(orderData.firma.foto_firma, 'base64');
+
+            // assign base64 image to order to be sent
             orderData.antes.foto1 = 'data:image/png;base64,' + beforePhoto1;
             orderData.despues.foto1 = 'data:image/png;base64,' +  afterPhoto1;
             orderData.firma.foto_firma = 'data:image/png;base64,' +  signature;
             
-            console.log(orderData);
 
             Axios.post('http://remusacr.com/gestion/app/procesar.php', orderData, {
                 headers: {
@@ -102,17 +105,23 @@ class Sign extends Component {
                 }
             }).then((response) => {
                 this.setState({ isLoading: false });
-                console.log('se envio el request', response)
-                this.props.navigation.goBack();
+                const orderID = this.props.navigation.getParam('orderID', 0);
+
+                AsyncStorage.getItem('ordersDelayed').then((ordersDelayed) => {
+                    const parsedOrders = JSON.parse(ordersDelayed);
+                    const ordersFiltered =  parsedOrders.filter((order) => order.orden !== orderID);
+                    AsyncStorage.setItem('ordersDelayed', JSON.stringify(ordersFiltered)).then(response => {
+                        this.props.navigation.reset([NavigationActions.navigate({ routeName: 'Orders' })], 0);
+                    });
+                });
+
             }).catch((err) => {
                 this.setState({ isLoading: false });
-                console.log(err);
-                // this.props.navigation.goBack();
+                this.props.navigation.goBack();
             });
         }
         else {
-            console.log('sin internet')
-            this.props.navigation.goBack();
+            this.props.navigation.reset([NavigationActions.navigate({ routeName: 'Orders' })], 0);
         }
     }
 

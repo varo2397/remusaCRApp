@@ -82,8 +82,7 @@ class Login extends Component {
 
             RNFS.mkdir('/storage/emulated/0/Pictures/REMUSA')
             AsyncStorage.multiSet([userID, ordersDelayed])
-            .then(() => this.props.navigation.navigate('Orders'))
-            .catch(err => console.log(err));
+            .then(() => this.props.navigation.navigate('Orders'));
             
         }
         else {

@@ -25,10 +25,8 @@ class Report extends Component {
                 cancelButtonTitle: 'Cancelar'
             }, response => {
                 if (response.didCancel) {
-                    console.log('cancelo');
                 }
                 else if (response.error) {
-                    console.log('error');
                 }
                 else {
                     this.setState({ image: { uri: response.uri }, base64Image: response.data })

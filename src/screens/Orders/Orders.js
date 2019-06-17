@@ -8,6 +8,7 @@ import Row from '../../components/Orders/row';
 import Header from '../../components/Orders/header';
 import DefaultButton from '../../components/UI/DefaultButton';
 import Loading from '../../components/UI/Loading';
+import sendOrders from '../saveOrders';
 
 class Order extends Component {
     state = {
@@ -19,15 +20,12 @@ class Order extends Component {
     async componentDidMount() {
         const internetConnection = await NetInfo.fetch();
         if (internetConnection.isConnected && (internetConnection.type === 'wifi' || internetConnection.type === 'cellular')) {
+            
             this.getOrdersServer();
         }
         else {
             this.getOrdersDevice();
         }
-
-    }
-
-    sendDelayedOrders = async () => {
 
     }
 
@@ -46,9 +44,12 @@ class Order extends Component {
     }
 
     getOrdersServer = async () => {
-        const { data } = await axios.get('http://remusacr.com/gestion/app/ordenes.php?id=385');
-        await AsyncStorage.setItem('orders', JSON.stringify(data));
-        this.setState({ isReady: true, orders: data });
+        sendOrders().finally(async () => {
+            const { data } = await axios.get('http://remusacr.com/gestion/app/ordenes.php?id=385');
+            await AsyncStorage.setItem('orders', JSON.stringify(data));
+            this.setState({ isReady: true, orders: data });
+        });
+        
     }
 
     static navigationOptions = ({ navigation }) => {

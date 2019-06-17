@@ -32,7 +32,6 @@ class OrderReport extends Component {
             
             const orderID = this.props.navigation.getParam('orderID', 0);
             let currentOrder = {};
-            console.log(ordersDelayed);
             let i = 0;
             for(i; i < ordersDelayed.length; i++) {
                 if (ordersDelayed[i].orden === orderID) {

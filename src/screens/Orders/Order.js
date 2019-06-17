@@ -43,6 +43,7 @@ class Orders extends Component {
         let orderData = {};
         
         const filteredOrders = ordersDelayed.filter((order) => order.orden === orderID);
+
         //there is at least one delayed order
         if (filteredOrders.length > 0) {
             orderData = filteredOrders[0];
