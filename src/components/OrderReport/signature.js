@@ -7,6 +7,9 @@ import DefaultButton from '../UI/DefaultButton';
 const { width, height } = Dimensions.get('window');
 class Signature extends Component {
 
+    constructor(props) {
+        super(props);
+    }
 
     render() {
 

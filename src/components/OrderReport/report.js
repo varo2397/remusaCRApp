@@ -8,12 +8,16 @@ import DefaulInput from '../UI/DefaultInput';
 
 class Report extends Component {
 
-    state = {
-        image: null,
-        comment: '',
-        date: Moment(new Date()).format("YYYY-MM-DD h:mm:ss"),
-        base64Image: null
+    constructor(props) {
+        super(props)
+        this.state = {
+            image: null,
+            comment: '',
+            date: Moment(new Date()).format("YYYY-MM-DD h:mm:ss"),
+            base64Image: null
+        }
     }
+
 
     pickPhotoHandler = () => {
         ImagePicker.showImagePicker(

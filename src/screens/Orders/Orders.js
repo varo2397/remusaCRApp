@@ -11,11 +11,14 @@ import Loading from '../../components/UI/Loading';
 import sendOrders from '../saveOrders';
 
 class Order extends Component {
-    state = {
-        orders: [],
-        isReady: true,
-        isLoading: false
-    };
+    constructor(props) {
+        super(props)
+        this.state = {
+            orders: [],
+            isReady: true,
+            isLoading: false
+        };
+    }
 
     async componentDidMount() {
         const internetConnection = await NetInfo.fetch();

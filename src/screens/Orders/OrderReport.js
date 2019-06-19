@@ -5,10 +5,13 @@ import Report from '../../components/OrderReport/report';
 import Loading from '../../components/UI/Loading';
 
 class OrderReport extends Component {
-    state = {
-        type: this.props.navigation.getParam('type', 0),
-        isLoading: false
-    };
+    constructor(props) {
+        super(props)
+        this.state = {
+            type: this.props.navigation.getParam('type', 0),
+            isLoading: false
+        };
+    }
 
     saveOrderReport = async (orderData) => {
         this.setState({isLoading: true});

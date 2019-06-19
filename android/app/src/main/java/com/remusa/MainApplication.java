@@ -1,16 +1,16 @@
-package com.remusacrapp;
+package com.remusa;
 
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.react.rnspinkit.RNSpinkitPackage;
-import com.reactnativecommunity.netinfo.NetInfoPackage;
-import com.rnfs.RNFSPackage;
 import com.terrylinla.rnsketchcanvas.SketchCanvasPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.react.rnspinkit.RNSpinkitPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+import com.rnfs.RNFSPackage;
+import com.reactnativecommunity.netinfo.NetInfoPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
-import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -31,14 +31,14 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNSpinkitPackage(),
-            new NetInfoPackage(),
-            new RNFSPackage(),
             new SketchCanvasPackage(),
+            new VectorIconsPackage(),
+            new RNSpinkitPackage(),
             new ImagePickerPackage(),
             new RNGestureHandlerPackage(),
-            new AsyncStoragePackage(),
-            new VectorIconsPackage()
+            new RNFSPackage(),
+            new NetInfoPackage(),
+            new AsyncStoragePackage()
       );
     }
 

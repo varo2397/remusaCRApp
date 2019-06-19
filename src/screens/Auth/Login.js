@@ -7,30 +7,52 @@ import DefaultInput from '../../components/UI/DefaultInput';
 import DefaultButton from '../../components/UI/DefaultButton';
 
 class Login extends Component {
-
-    state = {
-        controls: {
-            email: {
-                value: '',
-                touched: false
+    constructor(props) {
+        super(props);
+        this.state = {
+            controls: {
+                email: {
+                    value: '',
+                    touched: false
+                },
+                password: {
+                    value: '',
+                    touched: false
+                }
             },
-            password: {
-                value: '',
-                touched: false
-            }
-        },
-        error: '',
-        users: []
-    };
+            error: '',
+            users: []
+        };
+    }
 
     componentDidMount() {
-        this.checkCameraPermissions();
+        this.getAllPermissions();
+    }
+
+    getAllPermissions = () => {
+        PermissionsAndroid.requestMultiple(
+            [PermissionsAndroid.PERMISSIONS.CAMERA,
+            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE]
+            ).then((result) => {
+              if (result['android.permission.CAMERA']
+              && result['android.permission.READ_EXTERNAL_STORAGE']
+              && result['android.permission.WRITE_EXTERNAL_STORAGE'] === 'granted') {
+                this.setState({
+                  permissionsGranted: true
+                });
+              } else if (result['android.permission.CAMERA']
+              || result['android.permission.READ_EXTERNAL_STORAGE']
+              || result['android.permission.WRITE_EXTERNAL_STORAGE'] === 'never_ask_again') {
+                this.refs.toast.show('Please Go into Settings -> Applications -> APP_NAME -> Permissions and Allow permissions to continue');
+              }
+            });
     }
 
     checkCameraPermissions = async () => {
-        
+
         const checkCameraPermission = PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA);
-        if(checkCameraPermission === PermissionsAndroid.RESULTS.GRANTED) {
+        if (checkCameraPermission === PermissionsAndroid.RESULTS.GRANTED) {
 
         }
         else {
@@ -43,12 +65,60 @@ class Login extends Component {
                     }
                 )
                 if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                    
+                    this.checkStorageReadPermissions();
                 } else {
-                    alert("You don't have access for the location");
+                    this.checkStorageReadPermissions();
                 }
             } catch (err) {
                 alert(err)
+            }
+        }
+    }
+
+    checkStorageReadPermissions = async () => {
+        const checkCameraPermission = PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
+        if (checkCameraPermission === PermissionsAndroid.RESULTS.GRANTED) {
+        }
+        else {
+            try {
+                const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+                    {
+                        'title': 'Cool Location App required Location permission',
+                        'message': 'We required Location permission in order to get device location ' +
+                            'Please grant us.'
+                    }
+                )
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    this.checkStorageWritePermissions();
+                } else {
+                    this.checkStorageWritePermissions();
+                }
+            } catch (err) {
+
+            }
+        }
+    }
+
+    checkStorageWritePermissions = async () => {
+        const checkCameraPermission = PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+        if (checkCameraPermission === PermissionsAndroid.RESULTS.GRANTED) {
+        }
+        else {
+            try {
+                const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                    {
+                        'title': 'Cool Location App required Location permission',
+                        'message': 'We required Location permission in order to get device location ' +
+                            'Please grant us.'
+                    }
+                )
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+
+                } else {
+
+                }
+            } catch (err) {
+
             }
         }
     }
@@ -72,8 +142,8 @@ class Login extends Component {
         const userCorrect = users.filter(value => {
             if (this.state.controls.email.value === value.email &&
                 this.state.controls.password.value === value.pass) {
-                    return value
-                }
+                return value
+            }
         });
 
         if (userCorrect.length > 0) {
@@ -82,8 +152,8 @@ class Login extends Component {
 
             RNFS.mkdir('/storage/emulated/0/Pictures/REMUSA')
             AsyncStorage.multiSet([userID, ordersDelayed])
-            .then(() => this.props.navigation.navigate('Orders'));
-            
+                .then(() => this.props.navigation.navigate('Orders'));
+
         }
         else {
             this.setState({ error: 'Correo eléctronico o contraseña incorrectos' })
@@ -112,7 +182,7 @@ class Login extends Component {
     render() {
         return (
             <View style={styles.container} >
-                <Image source={require('../../../assets/remusa-01.png')} style={{resizeMode: 'contain', width: '80%', height: '30%'}} />
+                <Image source={require('../../../assets/remusa-01.png')} style={{ resizeMode: 'contain', width: '80%', height: '30%' }} />
                 <DefaultInput
                     placeholder={'Correo electronico'}
                     onChangeText={(value) => this.updateInputState('email', value)}

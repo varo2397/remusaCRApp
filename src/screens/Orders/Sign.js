@@ -12,22 +12,25 @@ import { NavigationActions } from 'react-navigation';
 
 
 class Sign extends Component {
-
-    state = {
-        showSignature: false,
-        controls: {
-            name: {
-                value: '',
-                touched: false
-            },
-            id: {
-                value: '',
-                touched: false
+    constructor(props) {
+        super(props)
+        
+            state = {
+                showSignature: false,
+                controls: {
+                    name: {
+                        value: '',
+                        touched: false
+                    },
+                    id: {
+                        value: '',
+                        touched: false
+                    }
+                },
+                signed: false,
+                error: '',
+                isLoading: false
             }
-        },
-        signed: false,
-        error: '',
-        isLoading: false
     }
 
     static navigationOptions = ({ navigation }) => {
