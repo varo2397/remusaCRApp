@@ -16,20 +16,23 @@ class Order extends Component {
         this.state = {
             orders: [],
             isReady: true,
-            isLoading: false
+            isLoading: false,
+            userID: ''
         };
     }
 
     async componentDidMount() {
         const internetConnection = await NetInfo.fetch();
-        if (internetConnection.isConnected && (internetConnection.type === 'wifi' || internetConnection.type === 'cellular')) {
-            
-            this.getOrdersServer();
-        }
-        else {
-            this.getOrdersDevice();
-        }
+        const userID = await AsyncStorage.getItem('userID');
+        this.setState({ userID: userID }, () => {
+            if (internetConnection.isConnected && (internetConnection.type === 'wifi' || internetConnection.type === 'cellular')) {
 
+                this.getOrdersServer();
+            }
+            else {
+                this.getOrdersDevice();
+            }
+        });
     }
 
     refresh = async () => {
@@ -38,7 +41,7 @@ class Order extends Component {
         if (internetConnection.isConnected && (internetConnection.type === 'wifi' || internetConnection.type === 'cellular')) {
             this.getOrdersServer().then(() => this.setState({ isLoading: false }));
         }
-        this.setState({isLoading: false});
+        this.setState({ isLoading: false });
     }
 
     getOrdersDevice = async () => {
@@ -48,11 +51,11 @@ class Order extends Component {
 
     getOrdersServer = async () => {
         sendOrders().finally(async () => {
-            const { data } = await axios.get('http://remusacr.com/gestion/app/ordenes.php?id=385');
+            const { data } = await axios.get('http://remusacr.com/gestion/app/ordenes.php?id=' + this.state.userID);
             await AsyncStorage.setItem('orders', JSON.stringify(data));
             this.setState({ isReady: true, orders: data });
         });
-        
+
     }
 
     static navigationOptions = ({ navigation }) => {

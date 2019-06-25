@@ -34,93 +34,19 @@ class Login extends Component {
             [PermissionsAndroid.PERMISSIONS.CAMERA,
             PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
             PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE]
-            ).then((result) => {
-              if (result['android.permission.CAMERA']
-              && result['android.permission.READ_EXTERNAL_STORAGE']
-              && result['android.permission.WRITE_EXTERNAL_STORAGE'] === 'granted') {
+        ).then((result) => {
+            if (result['android.permission.CAMERA']
+                && result['android.permission.READ_EXTERNAL_STORAGE']
+                && result['android.permission.WRITE_EXTERNAL_STORAGE'] === 'granted') {
                 this.setState({
-                  permissionsGranted: true
+                    permissionsGranted: true
                 });
-              } else if (result['android.permission.CAMERA']
-              || result['android.permission.READ_EXTERNAL_STORAGE']
-              || result['android.permission.WRITE_EXTERNAL_STORAGE'] === 'never_ask_again') {
+            } else if (result['android.permission.CAMERA']
+                || result['android.permission.READ_EXTERNAL_STORAGE']
+                || result['android.permission.WRITE_EXTERNAL_STORAGE'] === 'never_ask_again') {
                 this.refs.toast.show('Please Go into Settings -> Applications -> APP_NAME -> Permissions and Allow permissions to continue');
-              }
-            });
-    }
-
-    checkCameraPermissions = async () => {
-
-        const checkCameraPermission = PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA);
-        if (checkCameraPermission === PermissionsAndroid.RESULTS.GRANTED) {
-
-        }
-        else {
-            try {
-                const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA,
-                    {
-                        'title': 'Cool Location App required Location permission',
-                        'message': 'We required Location permission in order to get device location ' +
-                            'Please grant us.'
-                    }
-                )
-                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                    this.checkStorageReadPermissions();
-                } else {
-                    this.checkStorageReadPermissions();
-                }
-            } catch (err) {
-                alert(err)
             }
-        }
-    }
-
-    checkStorageReadPermissions = async () => {
-        const checkCameraPermission = PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
-        if (checkCameraPermission === PermissionsAndroid.RESULTS.GRANTED) {
-        }
-        else {
-            try {
-                const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-                    {
-                        'title': 'Cool Location App required Location permission',
-                        'message': 'We required Location permission in order to get device location ' +
-                            'Please grant us.'
-                    }
-                )
-                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                    this.checkStorageWritePermissions();
-                } else {
-                    this.checkStorageWritePermissions();
-                }
-            } catch (err) {
-
-            }
-        }
-    }
-
-    checkStorageWritePermissions = async () => {
-        const checkCameraPermission = PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
-        if (checkCameraPermission === PermissionsAndroid.RESULTS.GRANTED) {
-        }
-        else {
-            try {
-                const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-                    {
-                        'title': 'Cool Location App required Location permission',
-                        'message': 'We required Location permission in order to get device location ' +
-                            'Please grant us.'
-                    }
-                )
-                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-
-                } else {
-
-                }
-            } catch (err) {
-
-            }
-        }
+        });
     }
 
     updateInputState = (key, value) => {

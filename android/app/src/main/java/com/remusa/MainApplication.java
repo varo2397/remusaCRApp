@@ -3,12 +3,12 @@ package com.remusa;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.terrylinla.rnsketchcanvas.SketchCanvasPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.react.rnspinkit.RNSpinkitPackage;
 import com.imagepicker.ImagePickerPackage;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.rnfs.RNFSPackage;
+import com.terrylinla.rnsketchcanvas.SketchCanvasPackage;
 import com.reactnativecommunity.netinfo.NetInfoPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.facebook.react.ReactNativeHost;
@@ -31,12 +31,12 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new SketchCanvasPackage(),
             new VectorIconsPackage(),
+            new RNGestureHandlerPackage(),
             new RNSpinkitPackage(),
             new ImagePickerPackage(),
-            new RNGestureHandlerPackage(),
             new RNFSPackage(),
+            new SketchCanvasPackage(),
             new NetInfoPackage(),
             new AsyncStoragePackage()
       );
